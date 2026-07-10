@@ -1,0 +1,42 @@
+from tkinter import*
+window=Tk()
+window.title("SIMPLE CALCULATOR")
+window.geometry("310x420")
+window.grid_rowconfigure(0, weight=1)
+window.grid_rowconfigure(1, weight=1)
+window.grid_columnconfigure(0, weight=1)
+frame = Frame(window)
+display = Entry(window, font=("Arial", 24), justify="right")
+display.grid(row=0, column=0, sticky="nsew", padx=5, pady=4)
+frame.grid(row=1, column=0,sticky="nsew") 
+def click(value):
+     if value == '=':
+        exp = display.get()
+        exp = exp.replace('X','*')
+        exp = exp.replace('^','**')
+        try:
+            result = eval(exp)
+            display.delete(0,END)
+            display.insert(0,result)
+        except:
+            display.delete(0,END)
+            display.insert(0,'ERROR')
+     elif value == 'C':
+        display.delete(0,END)
+     elif value == '<':
+        if display.get():
+           display.delete(len(display.get())-1, END)
+     else:
+        display.insert(END,value)
+buttons= [
+    ['1','2','3','-','<'],
+    ['4','5','6','X','%'],
+    ['7','8','9','/','^'],
+    ['=','0','.','+','C']
+]
+for i in range(4):
+    frame.grid_rowconfigure(i, weight=1)
+    for j in range(5):
+        frame.grid_columnconfigure(j, weight=1)
+        Button(frame,text= buttons[i][j],font=('Arial',30),width=2,height=1,command=lambda value=buttons[i][j]:click(value)).grid(row=i, column=j, padx=3, pady=3, sticky="nsew")
+window.mainloop()
